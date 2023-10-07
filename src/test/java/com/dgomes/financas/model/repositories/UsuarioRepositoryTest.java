@@ -1,10 +1,13 @@
 package com.dgomes.financas.model.repositories;
 
 import com.dgomes.financas.model.entity.Usuario;
-import com.sun.security.auth.UnixNumericUserPrincipal;
+import com.dgomes.financas.service.UsuarioService;
+import com.dgomes.financas.service.impl.UsuarioServiceImpl;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,10 +23,14 @@ import java.util.Optional;
 @SpringBootTest // -> essa anotation não é necessária, além de carregar várias funcionalidades. Quando se está utilizadando testes em memória
 @RunWith(SpringRunner.class)
 public class UsuarioRepositoryTest {
+
+    //Por serem testes unitários, não há necessidade de @AUTOWIRED
     @Autowired
     UsuarioRepository repository;
+    @Autowired
+    UsuarioService usuarioService;
 
-    //@Autowired
+    //@Autowired    - utilizado para injetar a instancia original
     // TestEntityManager entityManager; --> o entity manager é o responsável por ações no banco, nela está uma instancia também do UsuarioRepository, porém para testes, o ideal
     // é utilizar a entidade de testes, não o repository direto
     public static Usuario criandoUser() {
@@ -99,6 +106,6 @@ public class UsuarioRepositoryTest {
         Optional<Usuario> result = repository.findByEmail("user@gmail.com");
 
         //verificação
-        Assertions.assertThat(result.isPresent()).isFalse(); // método isPresent é utilizado para verificar a presença de um optional
+        Assertions.assertThat(result.isPresent()).isFalse();
     }
 }

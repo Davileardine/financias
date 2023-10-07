@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service //Pedindo ao SPRING que gere e gerencie uma instancia dessa classe, junto com um container
 public class UsuarioServiceImpl implements UsuarioService {
-    private UsuarioRepository repository; // A camada de services não acessa diretamente o BDD
+    final private UsuarioRepository repository; // A camada de services não acessa diretamente o BDD
 
     public UsuarioServiceImpl(UsuarioRepository repository) {
         super();
