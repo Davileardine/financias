@@ -44,4 +44,5 @@ public class UsuarioServiceTest{
         //ação
         service.validarEmail("user@gmail.com");
     }
+    //TODO: Criar teste do método autenticar
 }

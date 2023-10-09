@@ -20,6 +20,8 @@ import java.util.Optional;
 
 //Recomendado usar anotations acima, pois além de ser em um banco de dados exclusivo para teste, evita de ter erros em checagem e uso de repository.deleteAll()
 
+
+//TODO: Realizar testes utilizando MOCK
 @SpringBootTest // -> essa anotation não é necessária, além de carregar várias funcionalidades. Quando se está utilizadando testes em memória
 @RunWith(SpringRunner.class)
 public class UsuarioRepositoryTest {

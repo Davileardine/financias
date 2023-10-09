@@ -1,4 +1,4 @@
-# financias
+# Financias
 Studying Java and API
 
 ### About
