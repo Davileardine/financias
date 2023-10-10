@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/usuarios")
 public class UserController {
@@ -28,6 +30,7 @@ public class UserController {
                 .nome(dto.nome())
                 .email(dto.email())
                 .senha(dto.senha())
+                .data_cadastro(LocalDate.now())
                 .build();
 
         try {
