@@ -28,7 +28,7 @@ public class UserController {
                 .nome(dto.nome())
                 .email(dto.email())
                 .senha(dto.senha())
-                .build();
+                .build(); //data de criação sendo salva na função
 
         try {
             Usuario usuarioSalvo = service.salvarUsuario(user);

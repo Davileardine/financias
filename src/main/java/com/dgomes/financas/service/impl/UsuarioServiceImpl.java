@@ -44,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional //Já que iremos mexer no BDD e alterar o seu estado, deve-se utilizar essa anotation
     public Usuario salvarUsuario(Usuario usuario) {
         validarEmail(usuario.getEmail());
-        usuario.setData_cadastro(LocalDate.now());
+        usuario.setData_cadastro(LocalDate.now()); // setando a data já na chamada da função
         return repository.save(usuario);
     }
 }
