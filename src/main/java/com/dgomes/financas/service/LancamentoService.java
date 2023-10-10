@@ -11,4 +11,5 @@ public interface LancamentoService {
     void deletar(Lancamento lancamento); //void pois não retorna nada, recebe o objeto a ser deletado
     List<Lancamento> buscar(Lancamento lancamentoBusca);
     void atualizarStatus(Lancamento lancamento, StatusLancamento status);
+    void validarLancamento(Lancamento lancamento);
 }

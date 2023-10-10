@@ -21,7 +21,6 @@ public class Lancamento { //fazendo sem @Column
     @ManyToOne //Indicando que um usuário pode ter vários lançamentos
     @JoinColumn(name = "id_usuario") //indicando qual coluna do banco atual terá essa dependência
     private Usuario usuario; //referenciando o objeto
-
     private BigDecimal valor;
     @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class) //necessário para traduzir o localdate do java para um formato aceito pelo BD
     private LocalDate data_cadastro;
