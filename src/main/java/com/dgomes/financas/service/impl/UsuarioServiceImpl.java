@@ -7,6 +7,8 @@ import com.dgomes.financas.model.repositories.UsuarioRepository;
 import com.dgomes.financas.service.UsuarioService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service //Pedindo ao SPRING que gere e gerencie uma instancia dessa classe, junto com um container
@@ -42,6 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional //Já que iremos mexer no BDD e alterar o seu estado, deve-se utilizar essa anotation
     public Usuario salvarUsuario(Usuario usuario) {
         validarEmail(usuario.getEmail());
+        usuario.setData_cadastro(LocalDate.now());
         return repository.save(usuario);
     }
 }
