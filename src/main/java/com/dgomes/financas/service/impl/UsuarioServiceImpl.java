@@ -41,6 +41,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Optional<Usuario> buscarId(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
     @Transactional //Já que iremos mexer no BDD e alterar o seu estado, deve-se utilizar essa anotation
     public Usuario salvarUsuario(Usuario usuario) {
         validarEmail(usuario.getEmail());
