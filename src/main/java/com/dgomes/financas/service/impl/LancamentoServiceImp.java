@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class LancamentoServiceImp implements LancamentoService {
@@ -46,12 +48,18 @@ public class LancamentoServiceImp implements LancamentoService {
         }
     }
 
+    @Override
+    public Optional<Lancamento> buscarId(Long id) {
+        return Optional.ofNullable(repository.findById(id).orElseThrow(() -> new RegraNegocioException("Esse lançamento não existe")));
+    }
+
 
     @Override
     @Transactional
     public Lancamento salvar(Lancamento lancamento) {
         validarLancamento(lancamento);
         lancamento.setStatus(StatusLancamento.PENDENTE);
+        lancamento.setData_cadastro(LocalDate.now());
         return repository.save(lancamento);
     }
 
