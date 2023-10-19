@@ -1,5 +1,6 @@
 package com.dgomes.financas.api.resource;
 
+import com.dgomes.financas.api.dto.AtualizaStatusDTO;
 import com.dgomes.financas.api.dto.LancamentoDTO;
 import com.dgomes.financas.api.dto.LancamentoResponseDTO;
 import com.dgomes.financas.exceptions.RegraNegocioException;
@@ -49,7 +50,6 @@ public class LancamentoController {
         try {
             Lancamento lancamento = converter(dto);
             lancamento = service.salvar(lancamento);
-
             return new ResponseEntity(lancamento, HttpStatus.CREATED); //TODO: mapear o retorno para não ter dados sensíveis
 
         } catch (RegraNegocioException e) {
@@ -71,6 +71,23 @@ public class LancamentoController {
             }
         }).orElseGet(() -> new ResponseEntity("Lançamento inválido!", HttpStatus.BAD_REQUEST));
 
+    }
+    @PutMapping("{id}/atualiza-status")
+    public ResponseEntity atualizaStatus(@PathVariable("id") Long id,
+                                        AtualizaStatusDTO dto){
+        return service.buscarId(id).map(entidadeComId -> {
+            StatusLancamento atualizado = StatusLancamento.valueOf(dto.status());
+            if(atualizado == null){
+                return ResponseEntity.badRequest().body("Favor insira um status válido");
+            }
+            try{
+                entidadeComId.setStatus(atualizado);
+                service.atualizar(entidadeComId);
+                return ResponseEntity.ok(entidadeComId);
+            } catch (RegraNegocioException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }).orElseGet(() -> new ResponseEntity("Lançamento inválido!", HttpStatus.BAD_REQUEST));
     }
     @GetMapping
     public ResponseEntity buscarLancamento(
