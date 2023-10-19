@@ -1,6 +1,7 @@
 package com.dgomes.financas.api.resource;
 
 import com.dgomes.financas.api.dto.LancamentoDTO;
+import com.dgomes.financas.api.dto.LancamentoResponseDTO;
 import com.dgomes.financas.exceptions.RegraNegocioException;
 import com.dgomes.financas.model.entity.Lancamento;
 import com.dgomes.financas.model.entity.Usuario;
@@ -48,7 +49,8 @@ public class LancamentoController {
         try {
             Lancamento lancamento = converter(dto);
             lancamento = service.salvar(lancamento);
-            return new ResponseEntity(lancamento, HttpStatus.CREATED);
+
+            return new ResponseEntity(lancamento, HttpStatus.CREATED); //TODO: mapear o retorno para não ter dados sensíveis
 
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
