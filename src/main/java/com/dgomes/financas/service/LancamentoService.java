@@ -3,6 +3,7 @@ package com.dgomes.financas.service;
 import com.dgomes.financas.model.entity.Lancamento;
 import com.dgomes.financas.model.enums.StatusLancamento;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,4 +16,6 @@ public interface LancamentoService {
     void validarLancamento(Lancamento lancamento);
 
     Optional<Lancamento> buscarId(Long id);
+
+    BigDecimal obterSaldoPorUsuario(Long idUsuario);
 }

@@ -3,6 +3,7 @@ package com.dgomes.financas.service.impl;
 import com.dgomes.financas.exceptions.RegraNegocioException;
 import com.dgomes.financas.model.entity.Lancamento;
 import com.dgomes.financas.model.enums.StatusLancamento;
+import com.dgomes.financas.model.enums.TipoLancamento;
 import com.dgomes.financas.model.repositories.LancamentoRepository;
 import com.dgomes.financas.service.LancamentoService;
 import org.springframework.data.domain.Example;
@@ -51,6 +52,21 @@ public class LancamentoServiceImp implements LancamentoService {
     @Override
     public Optional<Lancamento> buscarId(Long id) {
         return Optional.ofNullable(repository.findById(id).orElseThrow(() -> new RegraNegocioException("Esse lançamento não existe")));
+    }
+
+    @Override
+    public BigDecimal obterSaldoPorUsuario(Long idUsuario) {
+        BigDecimal receita = repository.obterSaldoPorUsuario(idUsuario, TipoLancamento.RECEITA.name());
+        BigDecimal despesa = repository.obterSaldoPorUsuario(idUsuario, TipoLancamento.DESPESA.name());
+
+        if(receita == null){
+            receita = BigDecimal.ZERO;
+        }
+        if(despesa == null){
+            receita = BigDecimal.ZERO;
+        }
+
+        return receita.subtract(despesa);
     }
 
 
