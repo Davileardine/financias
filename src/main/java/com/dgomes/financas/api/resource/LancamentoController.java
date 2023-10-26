@@ -29,13 +29,16 @@ public class LancamentoController {
     }
 
     private Lancamento converter(LancamentoDTO dto) { //convertendo DTO -> entidade
-        Lancamento lancamento = new Lancamento();
         Usuario usuario = usuarioService.buscarId(dto.usuario()).orElseThrow(() -> new RegraNegocioException("Por favor, insira um usuário válido!"));
-        lancamento.setUsuario(usuario);
-        lancamento.setValor(dto.valor());
-        lancamento.setDescricao(dto.descricao());
-        lancamento.setAno(dto.ano());
-        lancamento.setMes(dto.mes());
+
+        Lancamento lancamento = Lancamento.builder()
+                .usuario(usuario)
+                .valor(dto.valor())
+                .descricao(dto.descricao())
+                .ano(dto.ano())
+                .mes(dto.mes())
+                .build();
+
         if(dto.tipo() != null){
             lancamento.setTipo(TipoLancamento.valueOf(dto.tipo()));
         }
@@ -96,10 +99,11 @@ public class LancamentoController {
             @RequestParam(value = "descricao", required = false) String descricao,
             @RequestParam(value = "usuario") Long usuarioId
     ){
-        Lancamento lancamentoFiltro = new Lancamento();
-        lancamentoFiltro.setDescricao(descricao);
-        lancamentoFiltro.setAno(ano);
-        lancamentoFiltro.setMes(mes);
+        Lancamento lancamentoFiltro = Lancamento.builder()
+                .descricao(descricao)
+                .ano(ano)
+                .mes(mes)
+                .build();
         Optional<Usuario> usuario = usuarioService.buscarId(usuarioId);
         if(usuario.isEmpty()){
             return ResponseEntity.badRequest().body("Usuário não encontrado");

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "lancamento", schema = "financas")
 @Data
+@Builder
 public class Lancamento { //fazendo sem @Column
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
