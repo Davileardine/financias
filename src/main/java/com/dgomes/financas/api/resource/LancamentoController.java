@@ -84,8 +84,7 @@ public class LancamentoController {
                 return ResponseEntity.badRequest().body("Favor insira um status válido");
             }
             try{
-                entidadeComId.setStatus(atualizado);
-                service.atualizar(entidadeComId);
+                service.atualizarStatus(entidadeComId,atualizado);
                 return ResponseEntity.ok(entidadeComId);
             } catch (RegraNegocioException e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
