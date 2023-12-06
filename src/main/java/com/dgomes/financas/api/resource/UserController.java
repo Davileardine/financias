@@ -4,7 +4,6 @@ import com.dgomes.financas.api.dto.UsuarioAutenticacaoDTO;
 import com.dgomes.financas.api.dto.UsuarioResponseDTO;
 import com.dgomes.financas.exceptions.ErroAutenticacao;
 import com.dgomes.financas.exceptions.RegraNegocioException;
-import com.dgomes.financas.model.entity.Lancamento;
 import com.dgomes.financas.model.entity.Usuario;
 import com.dgomes.financas.service.LancamentoService;
 import com.dgomes.financas.service.UsuarioService;
