@@ -8,11 +8,13 @@ import com.dgomes.financas.model.entity.Lancamento;
 import com.dgomes.financas.model.entity.Usuario;
 import com.dgomes.financas.model.enums.StatusLancamento;
 import com.dgomes.financas.model.enums.TipoLancamento;
+
 import com.dgomes.financas.service.LancamentoService;
 import com.dgomes.financas.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -20,12 +22,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/lancamentos")
 public class LancamentoController {
+
     private final LancamentoService service;
     private final UsuarioService usuarioService;
 
     public LancamentoController(LancamentoService service, UsuarioService usuarioService) {
         this.service = service;
         this.usuarioService = usuarioService;
+
+
     }
 
     private Lancamento converter(LancamentoDTO dto) { //convertendo DTO -> entidade
@@ -48,7 +53,7 @@ public class LancamentoController {
         return lancamento;
     }
 
-    @PostMapping
+    @PostMapping("salvar")
     public ResponseEntity salvarLancamento(@RequestBody LancamentoDTO dto) {
         try {
             Lancamento lancamento = converter(dto);
@@ -60,7 +65,7 @@ public class LancamentoController {
         }
     }
 
-    @PutMapping("{id}") //Metodo PUT: atualiza algo
+    @PutMapping("{id}")
     public ResponseEntity atualizarLancamento(@PathVariable("id") Long id, // -> /api/lancamentos/id
                                               @RequestBody LancamentoDTO dto) {
         return service.buscarId(id).map(entidadeComId -> {
@@ -92,26 +97,32 @@ public class LancamentoController {
         }).orElseGet(() -> new ResponseEntity("Lançamento inválido!", HttpStatus.BAD_REQUEST));
     }
     @GetMapping
-    public ResponseEntity buscarLancamento(
+    public ResponseEntity<?> buscarLancamento(
             @RequestParam(value = "ano", required = false) Integer ano,
             @RequestParam(value = "mes", required = false) Integer mes,
             @RequestParam(value = "descricao", required = false) String descricao,
             @RequestParam(value = "usuario") Long usuarioId
-    ){
-        Lancamento lancamentoFiltro = Lancamento.builder()
-                .descricao(descricao)
-                .ano(ano)
-                .mes(mes)
-                .build();
+    ) {
+        Lancamento lancamentoFiltro = new Lancamento();
+        lancamentoFiltro.setMes(mes);
+        lancamentoFiltro.setAno(ano);
+        lancamentoFiltro.setDescricao(descricao);
+
         Optional<Usuario> usuario = usuarioService.buscarId(usuarioId);
-        if(usuario.isEmpty()){
+
+        if (usuario.isEmpty()) {
             return ResponseEntity.badRequest().body("Usuário não encontrado");
         }
-        else{
-            List<Lancamento> lancamentos = service.buscar(lancamentoFiltro);
-            return ResponseEntity.ok(lancamentos);
+        lancamentoFiltro.setUsuario(usuario.get());
+
+        List<Lancamento> lancamentos = service.buscar(lancamentoFiltro);
+
+        if (lancamentos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("Nenhum lançamento encontrado para os parâmetros fornecidos.");
         }
 
+        return ResponseEntity.ok(lancamentos);
     }
 
     @DeleteMapping("{id}")

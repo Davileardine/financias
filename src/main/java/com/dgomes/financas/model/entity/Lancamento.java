@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @Table(name = "lancamento", schema = "financas")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento { //fazendo sem @Column
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,6 +31,4 @@ public class Lancamento { //fazendo sem @Column
     private TipoLancamento tipo;
     @Enumerated(value = EnumType.STRING)
     private StatusLancamento status;
-
-
 }

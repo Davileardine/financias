@@ -25,7 +25,7 @@ public class UserController {
         this.service = service;
         this.lancamentoService = lancamentoService;
     }
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity saveUser(@RequestBody @NotNull UsuarioResponseDTO dto){
         Usuario user = Usuario.builder()
                 .nome(dto.nome())

@@ -2,10 +2,12 @@ package com.dgomes.financas.service.impl;
 
 import com.dgomes.financas.exceptions.RegraNegocioException;
 import com.dgomes.financas.model.entity.Lancamento;
+import com.dgomes.financas.model.entity.Usuario;
 import com.dgomes.financas.model.enums.StatusLancamento;
 import com.dgomes.financas.model.enums.TipoLancamento;
 import com.dgomes.financas.model.repositories.LancamentoRepository;
 import com.dgomes.financas.service.LancamentoService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,7 @@ public class LancamentoServiceImp implements LancamentoService {
     }
 
     @Override
-    public void validarLancamento(Lancamento lancamento) {
+    public void validarLancamento(@NotNull Lancamento lancamento) {
         if (lancamento.getDescricao() == null || lancamento.getDescricao().trim().isEmpty()){
             throw new RegraNegocioException("Insira uma descrição válida!");
         }
@@ -48,6 +49,7 @@ public class LancamentoServiceImp implements LancamentoService {
             throw new RegraNegocioException("Insira um tipo de lançamento!");
         }
     }
+
 
     @Override
     public Optional<Lancamento> buscarId(Long id) {
@@ -84,25 +86,27 @@ public class LancamentoServiceImp implements LancamentoService {
     @Transactional
     public Lancamento atualizar(Lancamento lancamento) {
         validarLancamento(lancamento);
-        Objects.requireNonNull(lancamento.getId());
         return repository.save(lancamento);
     }
 
     @Override
     @Transactional
     public void deletar(Lancamento lancamento) {
-        Objects.requireNonNull(lancamento.getId());
         repository.delete(lancamento);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Lancamento> buscar(Lancamento lancamentoBusca) {
-        Example<Lancamento> example = Example.of(lancamentoBusca, ExampleMatcher.matching() //Example -> realiza uma "query by example" de acordo com o preenchido
+
+        Example<Lancamento> ex = Example.of(lancamentoBusca, ExampleMatcher.matching()
+                .withIgnoreNullValues()
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
-        return repository.findAll(example);
+
+        return repository.findAll(ex);
     }
+
 
     @Override
     public void atualizarStatus(Lancamento lancamento, StatusLancamento status) {
